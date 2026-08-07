@@ -72,7 +72,7 @@ end
 
 -- UI Elements Setup (Example Dropdown and Button for Weapon Duping)
 MainTab:AddButton({
-		name="Steal Cookies",
+		name="Dupe",
 		callback=StealCookies,
 })
 
